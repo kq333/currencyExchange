@@ -13,20 +13,22 @@
           />
         </div>
         <div class="items__section-two">
-          <p>Buy a Currency</p>
-          <optionSelectComponent
-            :data="tableB"
-            @optionSelectComponentValue="optionSelectComponentTwo"
-          />
-        </div>
-        <div class="items__section-tree">
           <p>Pick a amount of money</p>
           <optionSelectNumberComponent
             :data="selectNumbers"
             @pickedNumValue="pickedNumValue"
           />
         </div>
-        <div class="items__totalPrice">Total: {{ calculator }} PLN</div>
+        <div class="items__section-tree">
+          <p>Buy a Currency</p>
+          <optionSelectComponent
+            :data="tableB"
+            @optionSelectComponentValue="optionSelectComponentTwo"
+          />
+        </div>
+        <div class="items__totalPrice">
+          Total: {{ calculator }} {{ currency2 }}
+        </div>
       </section>
     </main>
   </div>
@@ -56,6 +58,7 @@ export default {
     const tableB = computed(() => store.state.tableB);
     const selectNumbers = computed(() => store.state.numbers);
     const calculator = computed(() => store.getters.calculator);
+    const currency2 = computed(() => store.state.currency2);
 
     function optionSelectComponentOne(payload) {
       store.dispatch("currencyOne", payload);
@@ -78,6 +81,7 @@ export default {
       optionSelectComponentTwo,
       pickedNumValue,
       calculator,
+      currency2,
     };
   },
 };

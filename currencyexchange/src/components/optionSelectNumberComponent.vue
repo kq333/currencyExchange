@@ -42,7 +42,8 @@ export default {
 <style scoped lang="scss">
 .inputs-form {
   height: 49px;
-  width: 317px;
+  max-width: 317px;
+  width: 100%;
   color: black;
   border-radius: 8px;
   border: 1px solid black;
