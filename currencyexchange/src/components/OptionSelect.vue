@@ -9,12 +9,13 @@
     <option  v-for="item in data" :key="item.value" :value="item.value">
       {{ item.code }}
     </option>
+
   </select>
 </template>
 
 <script>
 export default {
-  name: "OptionSelectComponent",
+  name: "OptionSelect",
 
   props: {
     data: {

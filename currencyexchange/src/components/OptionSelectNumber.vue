@@ -6,11 +6,12 @@
     :value="numValue"
     class="inputs-form"
   />
+
 </template>
 
 <script>
 export default {
-  name: "OptionSelectNumberComponent",
+  name: "OptionSelectNumber",
 
   props: {
     numValue: {

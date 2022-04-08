@@ -7,18 +7,18 @@
       <section class="items">
         <div class="items__section">
           <p>My Currency</p>
-          <OptionSelectComponent
+          <OptionSelect
             :data="tableA"
             v-model:option-select-component-value="optionSelectComponentOne"
           />
         </div>
         <div class="items__section">
           <p>Pick a amount of money</p>
-          <OptionSelectNumberComponent v-model:num-value="pickedNumValus" />
+          <OptionSelectNumber v-model:num-value="pickedNumValus" />
         </div>
         <div class="items__section">
           <p>Buy a Currency</p>
-          <OptionSelectComponent
+          <OptionSelect
             :data="tableB"
             v-model:option-select-component-value="optionSelectComponentTwo"
           />
@@ -33,16 +33,16 @@
 
 <script>
 
-import OptionSelectComponent from '../components/OptionSelectComponent.vue'
-import OptionSelectNumberComponent from '../components/OptionSelectNumberComponent.vue'
+import OptionSelect from '../components/OptionSelect.vue'
+import OptionSelectNumber from '../components/OptionSelectNumber.vue'
 import { onMounted, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 export default {
   name: "Home",
   components: {
-    OptionSelectComponent,
-    OptionSelectNumberComponent,
+    OptionSelect,
+    OptionSelectNumber,
   },
 
   setup() {
