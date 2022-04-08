@@ -4,34 +4,26 @@ export default createStore({
   state: {
     tableA: [],
     tableB: [],
-    numbers: [
-      10, 20, 30, 40, 50, 60, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800,
-      900, 1000,
-    ],
-    currency1: "",
-    currency2: "",
+    currencyFrom: "",
+    currencyTo: "",
     pickedNum: "",
   },
 
   getters: {
-    filterCurrency: () => (arr, param) => {
+    getFilterCurrency: () => (arr, param) => {
       if (param == 0) {
         return null;
       } else {
-        const filterData = arr.find((item) => item.code === param);
+        const filterData = arr.find((item) => item.code == param);
         return new Array(filterData).map((item) => item.mid);
       }
     },
 
-    calculator: (state, getters) => {
-      if (
-        state.currency1.length &&
-        state.currency2.length &&
-        state.pickedNum.length
-      ) {
+    getCalculator: (state, getters) => {
+      if (state.currencyFrom && state.currencyTo && state.pickedNum) {
         return (
-          (getters.filterCurrency(state.tableA, state.currency1) /
-            getters.filterCurrency(state.tableB, state.currency2)) *
+          (getters.getFilterCurrency(state.tableA, state.currencyFrom) /
+            getters.getFilterCurrency(state.tableB, state.currencyTo)) *
           state.pickedNum
         ).toFixed(2);
       } else {
@@ -41,20 +33,17 @@ export default createStore({
   },
 
   mutations: {
-    FETCHED_DATA_A(state, payload) {
+    FETCHED_DATA(state, payload) {
       state.tableA = payload;
-    },
-
-    FETCHED_DATA_B(state, payload) {
       state.tableB = payload;
     },
 
     CURRENCY_ONE(state, payload) {
-      state.currency1 = payload;
+      state.currencyFrom = payload;
     },
 
     CURRENCY_TWO(state, payload) {
-      state.currency2 = payload;
+      state.currencyTo = payload;
     },
 
     PICKED_NUM_VALUE(state, payload) {
@@ -62,34 +51,22 @@ export default createStore({
     },
   },
   actions: {
-    async fetchTableA({ commit }) {
+    async fetchCurrencyTable({ commit }) {
       try {
         const dataTableA = await axios.get(
           "http://api.nbp.pl/api/exchangerates/tables/a/"
         );
-        commit("FETCHED_DATA_A", dataTableA.data[0].rates);
+        commit("FETCHED_DATA", dataTableA.data[0].rates);
       } catch (error) {
         console.log(error);
       }
     },
 
-    async fetchTableB({ commit }) {
-      try {
-        const dataTableB = await axios.get(
-          "http://api.nbp.pl/api/exchangerates/tables/b/"
-        );
-
-        commit("FETCHED_DATA_B", dataTableB.data[0].rates.slice(0, 34));
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    currencyOne({ commit }, payload) {
+    pickedCurrencyFrom({ commit }, payload) {
       commit("CURRENCY_ONE", payload);
     },
 
-    currencyTwo({ commit }, payload) {
+    pickedCurrencyTo({ commit }, payload) {
       commit("CURRENCY_TWO", payload);
     },
 

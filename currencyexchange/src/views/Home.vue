@@ -5,29 +5,26 @@
     </header>
     <main class="container">
       <section class="items">
-        <div class="items__section-one">
+        <div class="items__section">
           <p>My Currency</p>
-          <optionSelectComponent
+          <OptionSelectComponent
             :data="tableA"
-            @optionSelectComponentValue="optionSelectComponentOne"
+            v-model:option-select-component-value="optionSelectComponentOne"
           />
         </div>
-        <div class="items__section-two">
+        <div class="items__section">
           <p>Pick a amount of money</p>
-          <optionSelectNumberComponent
-            :data="selectNumbers"
-            @pickedNumValue="pickedNumValue"
-          />
+          <OptionSelectNumberComponent v-model:num-value="pickedNumValus" />
         </div>
-        <div class="items__section-tree">
+        <div class="items__section">
           <p>Buy a Currency</p>
-          <optionSelectComponent
+          <OptionSelectComponent
             :data="tableB"
-            @optionSelectComponentValue="optionSelectComponentTwo"
+            v-model:option-select-component-value="optionSelectComponentTwo"
           />
         </div>
-        <div class="items__totalPrice">
-          Total: {{ calculator }} {{ currency2 }}
+        <div class="items__total-price">
+          Total: {{ calculator }} {{ currencyName }}
         </div>
       </section>
     </main>
@@ -35,53 +32,52 @@
 </template>
 
 <script>
-import optionSelectComponent from "@/components/optionSelectComponent.vue";
-import optionSelectNumberComponent from "@/components/optionSelectNumberComponent.vue";
-import { onMounted, computed } from "vue";
+import OptionSelectComponent from "@/components/OptionSelectComponent.vue";
+import OptionSelectNumberComponent from "@/components/OptionSelectNumberComponent.vue";
+import { onMounted, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 export default {
   name: "Home",
   components: {
-    optionSelectComponent,
-    optionSelectNumberComponent,
+    OptionSelectComponent,
+    OptionSelectNumberComponent,
   },
 
   setup() {
     onMounted(() => {
-      store.dispatch("fetchTableA");
-      store.dispatch("fetchTableB");
+      store.dispatch("fetchCurrencyTable");
     });
 
     const store = useStore();
     const tableA = computed(() => store.state.tableA);
     const tableB = computed(() => store.state.tableB);
-    const selectNumbers = computed(() => store.state.numbers);
-    const calculator = computed(() => store.getters.calculator);
-    const currency2 = computed(() => store.state.currency2);
+    const calculator = computed(() => store.getters.getCalculator);
+    const currencyName = computed(() => store.state.currencyTo);
+    const pickedNumValus = ref(null);
+    const optionSelectComponentOne = ref(null);
+    const optionSelectComponentTwo = ref(null);
 
-    function optionSelectComponentOne(payload) {
-      store.dispatch("currencyOne", payload);
-    }
-
-    function optionSelectComponentTwo(payload) {
-      store.dispatch("currencyTwo", payload);
-    }
-
-    function pickedNumValue(payload) {
-      store.dispatch("pickedNumValue", payload);
-    }
+    watch(
+      [pickedNumValus, optionSelectComponentOne, optionSelectComponentTwo],
+      (num, currencyFrom, currencyTo) => {
+        if ((num, currencyFrom, currencyTo)) {
+          store.dispatch("pickedNumValue", pickedNumValus.value);
+          store.dispatch("pickedCurrencyFrom", optionSelectComponentOne.value);
+          store.dispatch("pickedCurrencyTo", optionSelectComponentTwo.value);
+        }
+      }
+    );
 
     return {
-      store,
       tableA,
       tableB,
-      selectNumbers,
       optionSelectComponentOne,
       optionSelectComponentTwo,
-      pickedNumValue,
+      pickedNumValus,
       calculator,
-      currency2,
+      currencyName,
+      store,
     };
   },
 };
@@ -101,31 +97,21 @@ export default {
 
   .container {
     margin-top: 50px;
+    padding: 10px;
 
     .items {
       background-color: #f0f8ff;
       padding: 20px;
       border-radius: 8px;
+      text-align: center;
 
-      &__section-one {
-        margin-left: 35%;
-      }
-      &__section-two {
-        margin-left: 35%;
-        margin-top: 40px;
-      }
-      &__section-tree {
-        margin-left: 35%;
-        margin-top: 30px;
-      }
-      &__totalPrice {
+      &__total-price {
         margin-top: 30px;
         text-align: center;
         font-weight: 700;
       }
 
       p {
-        margin-left: 15%;
         font-weight: 700;
       }
     }

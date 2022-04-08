@@ -1,20 +1,20 @@
 <template>
-  <label></label>
   <select
     class="inputs-form"
-    id="currency"
-    @change="SelectOptionValue"
-    v-model="selectValue"
+    @change="
+      (e) => $emit('update:option-select-component-value', e.target.value)
+    "
   >
-    <option selected disabled hidden>{{ defaultSelected }}</option>
-    <option v-for="item in data" :key="item">{{ item.code }}</option>
+      <option value="" selected disabled>Currency</option>
+    <option  v-for="item in data" :key="item.value" :value="item.value">
+      {{ item.code }}
+    </option>
   </select>
 </template>
 
 <script>
-import { ref } from "vue";
 export default {
-  name: "optionSelectComponent",
+  name: "OptionSelectComponent",
 
   props: {
     data: {
@@ -26,16 +26,6 @@ export default {
       default: "Currency",
     },
   },
-
-  setup(props, { emit }) {
-    const selectValue = ref(props.defaultSelected);
-
-    function SelectOptionValue(item) {
-      emit("optionSelectComponentValue", item.target.value);
-    }
-
-    return { SelectOptionValue, selectValue };
-  },
 };
 </script>
 
@@ -43,11 +33,10 @@ export default {
 .inputs-form {
   height: 49px;
   max-width: 317px;
-  width:100%;
+  width: 100%;
   color: black;
   border-radius: 8px;
   border: 1px solid black;
-
   padding: 10px;
 
   *:focus {

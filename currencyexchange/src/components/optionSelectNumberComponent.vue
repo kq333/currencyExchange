@@ -1,48 +1,29 @@
 <template>
-  <label></label>
-  <select
+  <input
+    type="number"
+    min="0"
+    @input="(e) => $emit('update:num-value', e.target.value)"
+    :value="numValue"
     class="inputs-form"
-    id="numbers"
-    @change="SelectOptionValue"
-    v-model="selectValue"
-  >
-    <option selected disabled hidden>{{ num }}</option>
-    <option v-for="item in data" :key="item">{{ item }}</option>
-  </select>
+  />
 </template>
 
 <script>
-import { ref } from "vue";
 export default {
-  name: "optionSelectNumberComponent",
+  name: "OptionSelectNumberComponent",
 
   props: {
-    data: {
-      type: Array,
-      required: true,
-    },
-    num: {
+    numValue: {
       type: String,
-      default: "Num",
     },
-  },
-
-  setup(props, { emit }) {
-    const selectValue = ref(props.num);
-
-    function SelectOptionValue(item) {
-      emit("pickedNumValue", item.target.value);
-    }
-
-    return { SelectOptionValue, selectValue };
   },
 };
 </script>
 
 <style scoped lang="scss">
 .inputs-form {
-  height: 49px;
-  max-width: 317px;
+  height: 30px;
+  max-width: 293px;
   width: 100%;
   color: black;
   border-radius: 8px;
