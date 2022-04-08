@@ -32,8 +32,9 @@
 </template>
 
 <script>
-import OptionSelectComponent from "../components/OptionSelectComponent.vue";
-import OptionSelectNumberComponent from "../components/OptionSelectNumberComponent.vue";
+
+import OptionSelectComponent from '../components/OptionSelectComponent.vue'
+import OptionSelectNumberComponent from '../components/OptionSelectNumberComponent.vue'
 import { onMounted, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
